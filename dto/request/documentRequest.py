@@ -4,5 +4,5 @@ from pydantic import BaseConfig
 BaseConfig.arbitrary_types_allowed = True
 
 
-class DocumentDTO(BaseModel):
+class DocumentRequest(BaseModel):
     content: str

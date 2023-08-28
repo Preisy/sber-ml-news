@@ -1,6 +1,8 @@
 .document{
-    Margin: 0 auto;
-    Max-width: 800px;
-    Min-width: 300px;
-    Width: 70%;
+    text-align: justify;
+    margin: 0 auto;
+    max-width: 800px;
+    min-width: 300px;
+    width: 70%;
+    padding: 25px 0;
 }

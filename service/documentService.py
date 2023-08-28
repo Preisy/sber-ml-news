@@ -1,11 +1,13 @@
 from starlette.requests import Request
 import os
 from dotenv import load_dotenv
-
+from fastapi import HTTPException
 from model.document import Document
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
-from dto import documentDTO
+
+from dto.request import documentRequest
+from dto.response.simpleMessageResponse import SimpleMessageResponse
 
 import uuid
 
@@ -15,30 +17,29 @@ load_dotenv('config/.env')
 domen = os.getenv('DOMEN')
 
 
-async def create_document(data: documentDTO.DocumentDTO, db: Session):
-    document = Document(text=data.text)
+async def create_document(db: Session, data: documentRequest.DocumentRequest):
+    document = Document(text=data.content)
     try:
         db.add(document)
         db.commit()
         db.refresh(document)
     except Exception as e:
-        print(e)
+        raise HTTPException(status_code=409, detail=e.__cause__)
+    return SimpleMessageResponse(f"https://{domen}/{document.guid}")
 
-    return f"https://{domen}/{document.id}"
 
-
-async def get_document(request: Request, guid: str, db):
-    document = db.query(Document).filter(Document.id == uuid.UUID(guid)).first()
-    return templates.TemplateResponse("document.html", {"request": request, "text": document.text})
+async def get_document( db, request: Request, guid: str):
+    document = db.query(Document).filter(Document.guid == uuid.UUID(guid)).first()
+    return templates.TemplateResponse("document.html", {"request": request, "content": document.content})
 
 
 async def delete(db: Session, guid: str):
-    document = db.query(Document).filter(Document.id == uuid.UUID(guid)).delete()
+    document = db.query(Document).filter(Document.guid == uuid.UUID(guid)).delete()
     db.commit()
-    return "Successfully deleted"
+    return SimpleMessageResponse("Successfully deleted")
 
 
 async def delete_all(db: Session):
     db.query(Document).delete()
     db.commit()
-    return "Successfully deleted"
+    return SimpleMessageResponse("Successfully deleted")
