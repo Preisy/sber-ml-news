@@ -4,8 +4,8 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse
 from database import get_db
 
-from service import documentService as DocumentService
-from dto.request import documentRequest as DocumentRequest
+from service.document_service import DocumentService
+from dto.request import document_request
 
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
@@ -18,7 +18,7 @@ class DocumentController:
     session: Session = Depends(get_db)
 
     @router.post('/')
-    async def create(self, data: DocumentRequest.DocumentRequest = None):
+    async def create(self, data: document_request.DocumentRequest = None):
         return await DocumentService.create_document(self.session, data)
 
     @router.delete('/')
