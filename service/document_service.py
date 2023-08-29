@@ -19,7 +19,6 @@ templates = Jinja2Templates(directory="templates")
 
 
 class DocumentService:
-
     async def create_document(self, db: Session, request: Request, data: document_request.DocumentRequest):
         template = templates.TemplateResponse("document.html", {"request": request, "content": data.content})
         soup = BeautifulSoup(template.body)
