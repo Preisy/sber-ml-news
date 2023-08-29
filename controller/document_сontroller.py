@@ -11,6 +11,7 @@ from fastapi_utils.inferring_router import InferringRouter
 
 router = InferringRouter(tags=["document"])
 
+
 @cbv(router)
 class DocumentController:
     session: Session = Depends(get_db)

@@ -18,7 +18,6 @@ templates = Jinja2Templates(directory="templates")
 
 
 class DocumentService:
-
     async def create_document(self, db: Session, request: Request, data: document_request.DocumentRequest):
         template = templates.TemplateResponse("document.html", {"request": request, "content": data.content})
         soup = BeautifulSoup(template.body)
@@ -31,6 +30,8 @@ class DocumentService:
 
     async def get_document(self, db: Session, guid: str):
         document = db.query(Document).filter(Document.guid == uuid.UUID(guid)).first()
+        if document is None:
+            raise HTTPException(status_code=404, detail="document not found")
         res = HTMLResponse(document.content).body
         formatted_res = res.decode('utf-8')
         print(formatted_res)
