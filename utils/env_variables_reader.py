@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 
 class EnvVariablesReader:
-     def get_domain(path: str):
+     def get_app_base_url(path: str):
         load_dotenv(path)
-        domain = os.getenv('DOMAIN')
-        return domain
+        app_base_url = os.getenv('APP_BASE_URL')
+        return app_base_url

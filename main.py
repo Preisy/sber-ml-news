@@ -9,7 +9,8 @@ from utils.global_exception_handler import GlobalExceptionHandler
 
 Base.metadata.create_all(bind=engine)
 
-exception_handlers = {500: GlobalExceptionHandler.internal_exception_handler}
+exception_handlers = {500: GlobalExceptionHandler.internal_exception_handler,
+                      404: GlobalExceptionHandler.not_found_exception_handler}
 
 app = FastAPI(exception_handlers=exception_handlers)
 
