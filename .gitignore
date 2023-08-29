@@ -1,0 +1,5 @@
+/venv
+/config/.env
+/.idea
+sql_app.db
+__pycache__/
