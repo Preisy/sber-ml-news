@@ -34,7 +34,6 @@ class DocumentService:
             raise HTTPException(status_code=404, detail="document not found")
         res = HTMLResponse(document.content).body
         formatted_res = res.decode('utf-8')
-        print(formatted_res)
         return HTMLResponse(content=formatted_res)
 
     async def delete(self, db: Session, guid: str):
